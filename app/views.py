@@ -6,7 +6,7 @@ from app import text_detection, model, db, app
 from datetime import timedelta
 
 app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
-app.secret_key = b'\xec7-\xae\xf1p\x1f\xf8dgb>,`T\x00'
+app.secret_key = os.urandom(16)
 
 
 def allowed_img(filename):
