@@ -18,6 +18,8 @@ def allowed_img(filename):
     else:
         return False
 
+# TODO: @app.before_request
+
 
 @app.before_request
 def expire():
