@@ -3,6 +3,8 @@ import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import text_detection, model, db, app
+from datetime import timedelta
+
 app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
 app.secret_key = b'\xec7-\xae\xf1p\x1f\xf8dgb>,`T\x00'
 
@@ -15,6 +17,12 @@ def allowed_img(filename):
         return True
     else:
         return False
+
+
+@app.before_request
+def expire():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=1440)
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -42,7 +50,7 @@ def confirm():
     if not 2 <= len(password) <= 20:
         flash("Password too long or too short!")
         return render_template('register.html', username=username)
-    password = generate_password_hash(password+username)
+    password = generate_password_hash(password + username)
     candidate_user = model.User(username=username, password=password)
     db.session.add(candidate_user)
     db.session.commit()
@@ -63,7 +71,7 @@ def login():
     except:
         flash('Invalid username or password')
         return redirect(url_for('index'))
-    if check_password_hash(candidate_user.password, password+username):
+    if check_password_hash(candidate_user.password, password + username):
         session['user'] = username
         return redirect(url_for('user', username=username))
     else:
@@ -113,7 +121,7 @@ def upload():
             else:
                 filename = secure_filename(file.filename)
                 name, ext = filename.rsplit(".", 1)
-                same_name = os.system('find . -name app/static/users/'+username+'/original/'+filename)
+                same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
                 print(same_name)
                 if same_name != 0:
                     name += '(1)'
@@ -132,7 +140,7 @@ def preview():
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
-    images = os.listdir('app/static/users/'+session['user']+'/original')
+    images = os.listdir('app/static/users/' + session['user'] + '/original')
     hists = []
     for image in images:
         hists.append(image)
