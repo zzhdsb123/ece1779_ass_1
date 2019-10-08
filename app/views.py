@@ -9,6 +9,10 @@ app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
 app.secret_key = b'\xec7-\xae\xf1p\x1f\xf8dgb>,`T\x00'
 
 
+# TODO: use get method instead of "if 'user' not in session:"
+# TODO: use username instead of user in session data
+# TODO: use os.random method to generate the secret key
+
 def allowed_img(filename):
     if "." not in filename:
         return False
