@@ -39,7 +39,7 @@ def register():
         pass
 
 # TODO: merge confirm and register
-# TODO:
+# TODO: BUG: check user at register page
 
 
 @app.route('/confirm', methods=["GET", "POST"])
