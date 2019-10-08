@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eea0c777-1ffd-4de8-8a0f-a4ae7e8899bc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,14 +47,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="328" />
-          <entry key="txt" value="24" />
+          <entry key="py" value="381" />
+          <entry key="txt" value="44" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="24" />
-          <entry key="Python" value="328" />
+          <entry key="PLAIN_TEXT" value="44" />
+          <entry key="Python" value="381" />
         </counts>
       </usages-collector>
     </session>
@@ -91,8 +90,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+            <state relative-caret-position="273">
+              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
               </folding>
@@ -344,7 +343,21 @@
       <option name="project" value="LOCAL" />
       <updated>1570505661835</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="TODO messages">
+      <created>1570551574965</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1570551574965</updated>
+    </task>
+    <task id="LOCAL-00004" summary="TODO Message">
+      <created>1570551697265</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1570551697265</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -382,7 +395,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TODO messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="TODO messages" />
+    <MESSAGE value="TODO Message" />
+    <option name="LAST_COMMIT_MESSAGE" value="TODO Message" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/text_detection.py">
@@ -431,8 +445,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+        <state relative-caret-position="273">
+          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
           </folding>
