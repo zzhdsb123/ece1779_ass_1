@@ -41,13 +41,13 @@ def confirm():
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
 
-    if not 2 <= len(username) <= 20:
+    if not 2 <= len(username) <= 100:
         flash("Invalid Username!")
         return render_template('register.html', username=username)
     if password != confirm_password:
         flash("Passwords do not match!")
         return render_template('register.html', username=username)
-    if not 2 <= len(password) <= 20:
+    if not 2 <= len(password) <= 100:
         flash("Password too long or too short!")
         return render_template('register.html', username=username)
     password = generate_password_hash(password + username)
@@ -87,30 +87,21 @@ def logout():
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    message = None
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
     username = session['user']
-    return render_template('user.html', user=username, message=message)
+    return render_template('user.html', user=username)
 
 
 @app.route('/upload', methods=["GET", "POST"])
 def upload():
+    if 'user' not in session:
+        flash('You are not logged in!')
+        return redirect(url_for('index'))
+    username = session['user']
     if request.method == "POST":
-        username = request.form.get('username')
-        password = request.form.get('password') + username
         file = request.files['file']
-        candidate_user = model.User.query.filter_by(username=username).first()
-        try:
-            candidate_user.username
-        except:
-            flash('Invalid username or password!')
-            return redirect(request.url)
-
-        if not check_password_hash(candidate_user.password, password):
-            flash('Invalid username or password!')
-            return redirect(request.url)
         if request.files:
             if file.filename == "":
                 flash("Image must have a filename")
@@ -154,3 +145,8 @@ def fullImg(img_name):
         flash('You are not logged in!')
         return redirect(url_for('index'))
     return render_template('full_img.html', img_name=img_name, username=session['user'])
+
+
+@app.route('/api/register/<username>/<password>')
+def api_register(username, password):
+    return
