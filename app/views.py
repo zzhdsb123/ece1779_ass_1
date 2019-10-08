@@ -27,9 +27,11 @@ def expire():
 
 @app.route('/', methods=["GET", "POST"])
 def index(message=None):
-    #TODO: CHECK LOGIN STATUS
-    return render_template('index.html', text=message)
+    username=session.get('user')
+    if username:
+        return redirect(url_for('user', username=username))
 
+    return render_template('index.html', text=message)
 
 @app.route('/register',methods=['GET','POST'])
 
