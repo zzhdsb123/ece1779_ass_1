@@ -50,6 +50,10 @@ def register():
         if not 2 <= len(password) <= 100:
             flash("Password too long or too short!")
             return render_template('register.html', username=username)
+
+        # TODO: BUG: check user at register page
+
+
         password = generate_password_hash(password + username)
         candidate_user = model.User(username=username, password=password)
         db.session.add(candidate_user)
@@ -60,34 +64,9 @@ def register():
         os.system('cd app/static/users/' + username + ' && mkdir ' + 'processed')
         return redirect(url_for('index'))
 
-# TODO: merge confirm and register
-# TODO: BUG: check user at register page
 
 
-@app.route('/confirm', methods=["GET", "POST"])
-def confirm():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    confirm_password = request.form.get('confirm_password')
 
-    if not 2 <= len(username) <= 100:
-        flash("Invalid Username!")
-        return render_template('register.html', username=username)
-    if password != confirm_password:
-        flash("Passwords do not match!")
-        return render_template('register.html', username=username)
-    if not 2 <= len(password) <= 100:
-        flash("Password too long or too short!")
-        return render_template('register.html', username=username)
-    password = generate_password_hash(password + username)
-    candidate_user = model.User(username=username, password=password)
-    db.session.add(candidate_user)
-    db.session.commit()
-
-    os.system('cd app/static/users && mkdir ' + username)
-    os.system('cd app/static/users/' + username + ' && mkdir ' + 'original')
-    os.system('cd app/static/users/' + username + ' && mkdir ' + 'processed')
-    return redirect(url_for('index'))
 
 
 @app.route('/login', methods=["GET", "POST"])
