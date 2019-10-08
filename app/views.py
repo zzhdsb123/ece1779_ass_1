@@ -30,9 +30,16 @@ def index(message=None):
     return render_template('index.html', text=message)
 
 
-@app.route('/register')
+@app.route('/register',methods=['GET','POST'])
+
 def register():
-    return render_template('register.html')
+    if request.method=='GET':
+        return render_template('register.html')
+    else:
+        pass
+
+# TODO: merge confirm and register
+# TODO:
 
 
 @app.route('/confirm', methods=["GET", "POST"])
