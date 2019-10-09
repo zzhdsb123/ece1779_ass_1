@@ -67,22 +67,25 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    candidate_user = model.User.query.filter_by(username=username).first()
-    try:
-        candidate_user.username
-    except:
-        flash('Invalid username or password')
-        return redirect(url_for('index'))
-    if check_password_hash(candidate_user.password, password + username):
-        session['user'] = username
-        session.permanent = True
-        app.permanent_session_lifetime = timedelta(minutes=1440)
-        return redirect(url_for('user', username=username))
+    if request.method=='POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        candidate_user = model.User.query.filter_by(username=username).first()
+        try:
+            candidate_user.username
+        except:
+            flash('Invalid username or password')
+            return redirect(url_for('index'))
+        if check_password_hash(candidate_user.password, password + username):
+            session['user'] = username
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(minutes=1440)
+            return redirect(url_for('user', username=username))
+        else:
+            flash('Invalid username or password')
+            return redirect(url_for('index'))
     else:
-        flash('Invalid username or password')
-        return redirect(url_for('index'))
+        return render_template('login.html')
 
 
 @app.route('/logout', methods=["GET", "POST"])
