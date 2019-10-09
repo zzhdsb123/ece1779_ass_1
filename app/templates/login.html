@@ -2,8 +2,11 @@
 
 {% block title%}Log in{%endblock%}
 
+
+
 {%block main%}
-<form action="{{ url_for('login') }}", method="post">
+<form action="{{ url_for('login') }}" method="post" class="loginform">
+
     <div class="form-group">
         <label for="exampleInputEmail1">Email address/User name</label>
         <input type="text" class="form-control" id="exampleInputEmail1"
