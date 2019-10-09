@@ -18,14 +18,14 @@
         {% endwith %}
     </h1>
 
-    <form method="post" action="/register">
+    <form method="post" action="{{ url_for('register') }}">
         User name:<br>
         <input type="text" name="username" value="{{ username if username != None}}" required><br>
         Password<br>
         <input type="password" name="password" required><br>
         Confirm Password<br>
         <input type="password" name="confirm_password" required><br>
-        <input type="submit" value="Sign in">
+        <input type="submit" value="Register">
         <input type="reset">
     </form>
 </body>

@@ -18,8 +18,6 @@ def allowed_img(filename):
     else:
         return False
 
-# TODO: @app.before_request
-
 
 @app.before_request
 def expire():
@@ -29,11 +27,9 @@ def expire():
 
 @app.route('/', methods=["GET", "POST"])
 def index(message=None):
-    username=session.get('user')
-    if username:
-        return redirect(url_for('user', username=username))
-
+    #TODO: CHECK LOGIN STATUS
     return render_template('index.html', text=message)
+
 
 @app.route('/register',methods=['GET','POST'])
 
