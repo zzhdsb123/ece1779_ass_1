@@ -19,16 +19,16 @@ def allowed_img(filename):
         return False
 
 
-@app.before_request
-def expire():
-    pass
+# @app.before_request
+# def expire():
+#     pass
 
 
 @app.route('/', methods=["GET", "POST"])
 def index():
     if 'user' in session:
         return redirect(url_for('user'))
-    return render_template('index.html')
+    return render_template('index2.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
