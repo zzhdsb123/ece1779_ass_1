@@ -1,4 +1,4 @@
-from flask import render_template, flash, request, redirect, url_for, session
+from flask import render_template, flash, request, redirect, url_for, session, jsonify
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,7 +6,7 @@ from app import text_detection, model, db, app
 from datetime import timedelta
 
 app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
-app.secret_key = os.urandom(16)
+app.secret_key = os.urandom(24)
 
 
 def allowed_img(filename):
@@ -26,47 +26,44 @@ def expire():
 
 
 @app.route('/', methods=["GET", "POST"])
-def index(message=None):
-    #TODO: CHECK LOGIN STATUS
-    return render_template('index.html', text=message)
+def index():
+    if 'user' in session:
+        return redirect(url_for('user'))
+    return render_template('index.html')
 
 
-@app.route('/register',methods=['GET','POST'])
-
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method=='GET':
-        return render_template('register.html')
-    else:
+    if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-
         if not 2 <= len(username) <= 100:
             flash("Invalid Username!")
-            return render_template('register.html', username=username)
+            return redirect(request.url)
         if password != confirm_password:
             flash("Passwords do not match!")
-            return render_template('register.html', username=username)
+            return redirect(request.url)
         if not 2 <= len(password) <= 100:
             flash("Password too long or too short!")
-            return render_template('register.html', username=username)
+            return redirect(request.url)
 
-        # TODO: BUG: check user at register page
-
+        # avoid users with the same username
+        dup_user = model.User.query.filter_by(username=username).first()
+        if dup_user is not None:
+            flash('Username already exists! Please choose another one!')
+            return redirect(request.url)
 
         password = generate_password_hash(password + username)
         candidate_user = model.User(username=username, password=password)
         db.session.add(candidate_user)
         db.session.commit()
-
         os.system('cd app/static/users && mkdir ' + username)
         os.system('cd app/static/users/' + username + ' && mkdir ' + 'original')
         os.system('cd app/static/users/' + username + ' && mkdir ' + 'processed')
-        return redirect(url_for('index'))
-
-
-
-
+        session['user'] = username
+        return redirect(url_for('user'))
+    return render_template('register.html')
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -155,6 +152,9 @@ def fullImg(img_name):
     return render_template('full_img.html', img_name=img_name, username=session['user'])
 
 
-@app.route('/api/register/<username>/<password>')
-def api_register(username, password):
-    return
+@app.route('/api/register')
+def api_register():
+    username = request.json['username']
+    password = request.json['password']
+
+    pass
