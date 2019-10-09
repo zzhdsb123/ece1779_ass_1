@@ -21,8 +21,7 @@ def allowed_img(filename):
 
 @app.before_request
 def expire():
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=1440)
+    pass
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -78,6 +77,8 @@ def login():
         return redirect(url_for('index'))
     if check_password_hash(candidate_user.password, password + username):
         session['user'] = username
+        session.permanent = True
+        app.permanent_session_lifetime = timedelta(minutes=1440)
         return redirect(url_for('user', username=username))
     else:
         flash('Invalid username or password')
@@ -114,11 +115,12 @@ def upload():
             if not allowed_img(file.filename):
                 flash("That image extension is not allowed!")
                 return redirect(request.url)
+
             else:
                 filename = secure_filename(file.filename)
                 name, ext = filename.rsplit(".", 1)
                 same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
-                print(same_name)
+                # print(same_name)
                 if same_name != 0:
                     name += '(1)'
                 original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
@@ -152,9 +154,55 @@ def fullImg(img_name):
     return render_template('full_img.html', img_name=img_name, username=session['user'])
 
 
-@app.route('/api/register')
+@app.route('/api/register', methods=["POST", "GET"])
 def api_register():
     username = request.json['username']
     password = request.json['password']
+    if not isinstance(username, str) or not 2 <= len(username) <= 100:
+        return jsonify("invalid username!"), 406
+    if not isinstance(username, str) or not 2 <= len(password) <= 100:
+        return jsonify("invalid password!"), 406
+    dup_user = model.User.query.filter_by(username=username).first()
+    if dup_user is not None:
+        return jsonify("username already exists!"), 406
+    password = generate_password_hash(password + username)
+    candidate_user = model.User(username=username, password=password)
+    db.session.add(candidate_user)
+    db.session.commit()
+    os.system('cd app/static/users && mkdir ' + username)
+    os.system('cd app/static/users/' + username + ' && mkdir ' + 'original')
+    os.system('cd app/static/users/' + username + ' && mkdir ' + 'processed')
+    return jsonify("user created!"), 201
 
-    pass
+
+@app.route('/api/upload', methods=["POST", "GET"])
+def api_upload():
+    username = request.json['username']
+    password = request.json['password']
+    file = request.json['file']
+    if not isinstance(username, str) or not 2 <= len(username) <= 100:
+        return jsonify("invalid username or password!"), 406
+    if not isinstance(username, str) or not 2 <= len(password) <= 100:
+        return jsonify("invalid username or password!"), 406
+    candidate_user = model.User.query.filter_by(username=username).first()
+    if candidate_user is None:
+        return jsonify("invalid username or password!"), 406
+    if not check_password_hash(candidate_user.password, password + username):
+        return jsonify("invalid username or password!"), 406
+    if file.filename == "":
+        return jsonify("Image must have a filename"), 406
+    if not allowed_img(file.filename):
+        return jsonify("That image extension is not allowed!"), 406
+    else:
+        filename = secure_filename(file.filename)
+        name, ext = filename.rsplit(".", 1)
+        same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
+        # print(same_name)
+        if same_name != 0:
+            name += '(1)'
+        original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
+        new_img_name = 'app/static/users/' + username + '/processed/' + name + '.' + ext
+        file.save(os.path.join("app/static/users/" + username + '/original/', name + '.' + ext))
+        east_location = "app/frozen_east_text_detection.pb"
+        text_detection.process_image(original_name, east_location, new_img_name)
+        return jsonify("upload success!"), 201
