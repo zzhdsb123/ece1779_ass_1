@@ -121,7 +121,7 @@ def user():
         flash('You are not logged in!')
         return redirect(url_for('index'))
     username = session['user']
-    return render_template('user.html', user=username)
+    return render_template('user2.html', user=username)
 
 
 @app.route('/upload', methods=["GET", "POST"])

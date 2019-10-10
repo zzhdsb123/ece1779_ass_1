@@ -19,3 +19,12 @@
 .page-title{
     text-align: center;
 }
+
+.button-list{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.button{
+    width: 250px;
+}
