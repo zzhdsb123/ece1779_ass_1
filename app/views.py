@@ -130,6 +130,7 @@ def upload():
         flash('You are not logged in!')
         return redirect(url_for('index'))
     username = session['user']
+    
     if request.method == "POST":
         file = request.files['file']
         if request.files:
@@ -153,7 +154,7 @@ def upload():
                 east_location = "app/frozen_east_text_detection.pb"
                 text_detection.process_image(original_name, east_location, new_img_name)
                 flash("upload success!")
-    return render_template('upload.html')
+    return render_template('upload2.html')
 
 
 # display all the images in the folder
@@ -167,7 +168,7 @@ def preview():
     for image in images:
         hists.append(image)
     hists.sort()
-    return render_template('preview.html', hists=hists, username=session['user'])
+    return render_template('preview2.html', hists=hists, username=session['user'])
 
 
 @app.route('/fullImg/<img_name>')

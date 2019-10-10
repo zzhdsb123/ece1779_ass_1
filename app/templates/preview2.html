@@ -1,0 +1,68 @@
+{% extends 'after_login_base.html'%}
+
+{% block title%}Prereview{%endblock%}
+
+{%block main%}
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            {% for hist in hists %}
+            <!--<a href="{{ url_for('fullImg', img_name=hist) }}">-->
+            {% if hist != '.DS_Store' %}
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a href="{{ url_for('fullImg', img_name=hist) }}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                             src="/static/users/{{ username }}/original/{{ hist }}"
+                             preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                             aria-label="Placeholder: Thumbnail" alt="{{hist}}">
+                    </a>
+                    <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                    </img>
+                    <div class="card-body">
+                        <p class="card-text">{{hist}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ url_for('fullImg', img_name=hist) }}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                </a>
+                                <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+            <!--</a>-->
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="col-md-4">-->
+<!--<div class="card mb-4 shadow-sm">-->
+<!--<img class="bd-placeholder-img card-img-top" width="100%" height="225"-->
+<!--src="/static/users/111/original/190610-214615.png"-->
+<!--preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">-->
+<!--<title>Placeholder</title>-->
+<!--<rect width="100%" height="100%" fill="#55595c"></rect>-->
+<!--</img>-->
+<!--<div class="card-body">-->
+<!--<p class="card-text">190610-214615.png</p>-->
+<!--<div class="d-flex justify-content-between align-items-center">-->
+<!--<div class="btn-group">-->
+<!--<button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
+<!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+<!--</div>-->
+<!--<small class="text-muted">9 mins</small>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+{%endblock%}
