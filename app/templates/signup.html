@@ -4,8 +4,8 @@
 
 {%block main%}
 
-<form>
-    <div class="form-row">
+<form method="post" class="loginform">
+    <!--<div class="form-row">-->
         <!--<div class="col-md-4 mb-3">-->
             <!--<label for="validationServer01">First name</label>-->
             <!--<input type="text" class="form-control is-valid" id="validationServer01" placeholder="First name"-->
@@ -23,20 +23,29 @@
                 <!--Looks good!-->
             <!--</div>-->
         <!--</div>-->
-
-        <div class="col-md-4 mb-3">
+        {%if username_valid ==-1 %}
+        <div class="form-group">
             <label for="validationServerUsername">Username</label>
             <div class="input-group">
-                <input type="text" class="form-control is-invalid" id="validationServerUsername" placeholder="Username"
-                       aria-describedby="inputGroupPrepend3" required>
+                <input type="text" class="form-control" id="validationServerUsername" placeholder="Username"
+                       aria-describedby="inputGroupPrepend3" name="username" required>
+            </div>
+        </div>
+        {% else%}
+        <div class="form-group">
+            <label for="validationServerUsername">Username</label>
+            <div class="input-group">
+                <input type="text" class="form-control is-invalid" id="validationServerUsername1" placeholder="Username"
+                       aria-describedby="inputGroupPrepend3" name="username" required>
                 <div class="invalid-feedback">
                     Please choose a username.
                 </div>
             </div>
         </div>
-    </div>
+        {%endif%}
+    <!--</div>-->
 
-    <div class="form-row">
+    <!--<div class="form-row">-->
         <!--<div class="col-md-6 mb-3">-->
             <!--<label for="validationServer03">City</label>-->
             <!--<input type="text" class="form-control is-invalid" id="validationServer03" placeholder="City" required>-->
@@ -59,23 +68,23 @@
             <!--</div>-->
         <!--</div>-->
 
-        <div class="col-md-3 mb-3">
+        <div class="form-group">
             <label for="validationServer01">Password</label>
-            <input type="password" class="form-control is-invalid" id="validationServer01" placeholder="Password" required>
+            <input type="password" class="form-control is-invalid" id="validationServer01" placeholder="Password" name="password" required>
             <div class="invalid-feedback">
                 Please provide a valid zip.
             </div>
         </div>
-    </div>
-        <div class="form-row">
-        <div class="col-md-3 mb-3">
+    <!--</div>-->
+        <!--<div class="form-row">-->
+        <div class="form-group">
             <label for="validationServer02">Reenter Password</label>
-            <input type="password" class="form-control is-invalid" id="validationServer02" placeholder="Password" required>
+            <input type="password" class="form-control is-invalid" id="validationServer02" placeholder="Password" name="confirm_password" required>
             <div class="invalid-feedback">
                 Please provide a valid zip.
             </div>
         </div>
-    </div>
+    <!--</div>-->
 
     <div class="form-group">
         <div class="form-check">
@@ -89,6 +98,6 @@
         </div>
     </div>
 
-    <button class="btn btn-primary" type="submit">Submit form</button>
+    <button class="btn btn-primary btn-block" type="submit">Sign me up!</button>
 </form>
 {%endblock%}
