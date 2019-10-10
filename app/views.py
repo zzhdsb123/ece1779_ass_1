@@ -144,6 +144,8 @@ def upload():
             else:
                 filename = secure_filename(file.filename)
                 name, ext = filename.rsplit(".", 1)
+                #TODO: Allow user upload imgs with same names
+                #TODO: Use img_id rather than img name
                 same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
                 # print(same_name)
                 if same_name != 0:
@@ -160,6 +162,7 @@ def upload():
 # display all the images in the folder
 @app.route("/preview")
 def preview():
+    # TODO: Split pages if number of imgs is huge
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
