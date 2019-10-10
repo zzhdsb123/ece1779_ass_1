@@ -40,7 +40,8 @@ def register():
         context={
             'username_valid':0,
             'password_valid':0,
-            'pawconfirm_valid':0
+            'pawconfirm_valid':0,
+            'username':username
                  }
 
         flag=False
