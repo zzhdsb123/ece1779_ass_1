@@ -62,7 +62,7 @@ def register():
         os.system('cd app/static/users/' + username + ' && mkdir ' + 'processed')
         session['user'] = username
         return redirect(url_for('user'))
-    return render_template('register.html')
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=["GET", "POST"])

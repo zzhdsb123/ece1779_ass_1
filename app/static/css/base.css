@@ -3,10 +3,19 @@
     width:730px;
     margin: 0 auto;
     overflow: hidden;
+    padding: 10px;
 }
 
 .loginform{
-    width: 360px;
+    width: 300px;
     margin: 0 auto;
     overflow: hidden;
+}
+
+.base{
+    background: #f3f3f3;
+}
+
+.page-title{
+    text-align: center;
 }
