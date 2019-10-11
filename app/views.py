@@ -67,7 +67,7 @@ def register():
             context['username_valid'] = 2
             flag = True
         if flag:
-            return render_template('signup.html',**context)
+            return render_template('signup.html', **context)
 
         password = generate_password_hash(password + username)
         candidate_user = model.User(username=username, password=password)
@@ -143,17 +143,17 @@ def upload():
 
             else:
                 filename = secure_filename(file.filename)
+                candidate_file = model.Image(filename=filename)
+                db.session.add(candidate_file)
+                db.session.commit()
                 name, ext = filename.rsplit(".", 1)
-                same_name = os.popen('cd app/static/users/' + username + '/original && find . -name ' + filename).read()
-                if same_name != "":
-                    name += '(1)'
+                name = str(candidate_file.id)
                 original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
                 new_img_name = 'app/static/users/' + username + '/processed/' + name + '.' + ext
                 file.save(os.path.join("app/static/users/" + username + '/original/', name + '.' + ext))
                 east_location = "app/frozen_east_text_detection.pb"
                 text_detection.process_image(original_name, east_location, new_img_name)
                 flash("upload success!")
-        return render_template('upload_success.html')
     return render_template('upload2.html')
 
 
@@ -166,18 +166,17 @@ def preview():
         return redirect(url_for('index'))
     images = os.listdir('app/static/users/' + session['user'] + '/original')
     hists = []
-    for image in images:
-        hists.append(image)
-    hists.sort()
+    for img_id in images:
+        hists.append(img_id)
     return render_template('preview2.html', hists=hists, username=session['user'])
 
 
-@app.route('/fullImg/<img_name>')
-def fullImg(img_name):
+@app.route('/fullImg/<img_id>')
+def fullImg(img_id):
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
-    return render_template('full_img2.html', img_name=img_name, username=session['user'])
+    return render_template('full_img2.html', img_name=img_id, username=session['user'])
 
 
 @app.route('/api/register', methods=["POST", "GET"])
