@@ -176,7 +176,7 @@ def fullImg(img_name):
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
-    return render_template('full_img.html', img_name=img_name, username=session['user'])
+    return render_template('full_img2.html', img_name=img_name, username=session['user'])
 
 
 @app.route('/api/register', methods=["POST", "GET"])
