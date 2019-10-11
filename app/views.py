@@ -38,22 +38,22 @@ def register():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         context={
-            'username_valid':0,
-            'password_valid':0,
-            'pawconfirm_valid':0,
-            'username':username
+            'username_valid': 0,
+            'password_valid': 0,
+            'pawconfirm_valid': 0,
+            'username': username
                  }
 
-        flag=False
+        flag = False
         if not 2 <= len(username) <= 100:
             # flash("Invalid Username!")
-            context['username_valid']=1
-            flag=True
+            context['username_valid'] = 1
+            flag = True
 
         if password != confirm_password:
             # flash("Passwords do not match!")
-            context['password_valid']=1
-            flag=True
+            context['password_valid'] = 1
+            flag = True
 
         if not 2 <= len(password) <= 100:
             # flash("Password too long or too short!")
@@ -64,8 +64,8 @@ def register():
         dup_user = model.User.query.filter_by(username=username).first()
         if dup_user is not None:
             # flash('Username already exists! Please choose another one!')
-            context['username_valid']=2
-            flag=True
+            context['username_valid'] = 2
+            flag = True
         if flag:
             return render_template('signup.html',**context)
 
@@ -83,12 +83,12 @@ def register():
         'password_valid': -1,
         'pawconfirm_valid': -1
     }
-    return render_template('signup.html',**context)
+    return render_template('signup.html', **context)
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if request.method=='POST':
+    if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         candidate_user = model.User.query.filter_by(username=username).first()
@@ -144,11 +144,8 @@ def upload():
             else:
                 filename = secure_filename(file.filename)
                 name, ext = filename.rsplit(".", 1)
-                #TODO: Allow user upload imgs with same names
-                #TODO: Use img_id rather than img name
-                same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
-                # print(same_name)
-                if same_name != 0:
+                same_name = os.popen('cd app/static/users/' + username + '/original && find . -name ' + filename).read()
+                if same_name != "":
                     name += '(1)'
                 original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
                 new_img_name = 'app/static/users/' + username + '/processed/' + name + '.' + ext
@@ -184,8 +181,8 @@ def fullImg(img_name):
 
 @app.route('/api/register', methods=["POST", "GET"])
 def api_register():
-    username = request.json['username']
-    password = request.json['password']
+    username = request.form.get('username')
+    password = request.form.get('password')
     if not isinstance(username, str) or not 2 <= len(username) <= 100:
         return jsonify("invalid username!"), 406
     if not isinstance(username, str) or not 2 <= len(password) <= 100:
@@ -205,9 +202,9 @@ def api_register():
 
 @app.route('/api/upload', methods=["POST", "GET"])
 def api_upload():
-    username = request.json['username']
-    password = request.json['password']
-    file = request.json['file']
+    username = request.form.get('username')
+    password = request.form.get('password')
+    file = request.files['file']
     if not isinstance(username, str) or not 2 <= len(username) <= 100:
         return jsonify("invalid username or password!"), 406
     if not isinstance(username, str) or not 2 <= len(password) <= 100:
@@ -224,9 +221,8 @@ def api_upload():
     else:
         filename = secure_filename(file.filename)
         name, ext = filename.rsplit(".", 1)
-        same_name = os.system('find . -name app/static/users/' + username + '/original/' + filename)
-        # print(same_name)
-        if same_name != 0:
+        same_name = os.popen('cd app/static/users/' + username + '/original && find . -name ' + filename).read()
+        if same_name != "":
             name += '(1)'
         original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
         new_img_name = 'app/static/users/' + username + '/processed/' + name + '.' + ext
