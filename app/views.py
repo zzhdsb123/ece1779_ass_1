@@ -166,9 +166,16 @@ def preview():
         flash('You are not logged in!')
         return redirect(url_for('index'))
     images = os.listdir('app/static/users/' + session['user'] + '/original')
-    hists = []
+    hists = {}
     for img_id in images:
-        hists.append(img_id)
+        cur_id = img_id.rsplit(".", 1)[0]
+        try:
+            cur_id = int(cur_id)
+            img_name = model.Image.query.filter_by(id=cur_id).first().filename
+        except:
+            img_name = None
+        hists[img_id] = img_name
+        # print(hists[img_id])
     return render_template('preview2.html', hists=hists, username=session['user'])
 
 
