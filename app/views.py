@@ -96,7 +96,7 @@ def login():
             candidate_user.username
         except:
             flash('Invalid username or password')
-            return redirect(url_for('index'))
+            return render_template('login.html',p=1)
         if check_password_hash(candidate_user.password, password + username):
             session['user'] = username
             session.permanent = True
@@ -104,7 +104,7 @@ def login():
             return redirect(url_for('user', username=username))
         else:
             flash('Invalid username or password')
-            return redirect(url_for('index'))
+            return render_template('login.html',p=1)
     else:
         return render_template('login.html')
 
