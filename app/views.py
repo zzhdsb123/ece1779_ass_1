@@ -154,6 +154,7 @@ def upload():
                 east_location = "app/frozen_east_text_detection.pb"
                 text_detection.process_image(original_name, east_location, new_img_name)
                 flash("upload success!")
+        return render_template('upload_success.html')
     return render_template('upload2.html')
 
 
