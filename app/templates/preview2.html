@@ -6,7 +6,7 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
-            {% for hist in hists %}
+            {% for hist, name in hists.items() %}
             <!--<a href="{{ url_for('fullImg', img_id=hist) }}">-->
             {% if hist != '.DS_Store' %}
 
@@ -22,7 +22,7 @@
                     <rect width="100%" height="100%" fill="#55595c"></rect>
                     </img>
                     <div class="card-body">
-                        <p class="card-text"></p>
+                        <p class="card-text">{{ name }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <a href="{{ url_for('fullImg', img_id=hist) }}">
