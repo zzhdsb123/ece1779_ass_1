@@ -14,15 +14,20 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='css/base.css')}}">
+
+
     {% block head%}{%endblock%}
-    <title>{% block title %} {%endblock%} - F91</title>
+    <title>{% block title %} {%endblock%} - Text Detector</title>
 </head>
 
 
     <body class="base">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">F91</a>
+        <a class="navbar-brand" href="#">
+        <span class="glyphicon glyphicon-camera"> </span>
+
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

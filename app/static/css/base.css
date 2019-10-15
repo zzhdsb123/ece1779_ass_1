@@ -1,5 +1,14 @@
+.base{
+    background: url(/static/IMG_7229.JPG)no-repeat center center;
+   background-size:cover;
+   background-attachment:fixed;
+   background-color:#CCCCCC;
+}
+
 .main{
     background: #fff;
+    opacity:0.8;
+    filter:alpha(opacity=40);
     width:730px;
     margin: 0 auto;
     overflow: hidden;
@@ -12,9 +21,9 @@
     overflow: hidden;
 }
 
-.base{
-    background: #f3f3f3;
-}
+/*.base{*/
+    /*background: #f3f3f3;*/
+/*}*/
 
 .page-title{
     text-align: center;
