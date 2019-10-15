@@ -8,7 +8,7 @@ from datetime import timedelta
 # the following four image extensions are allowed
 app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
 app.secret_key = os.urandom(24)
-
+db.create_all()
 
 def allowed_img(filename):
     # a function which determines whether a filename(extension) is allowed
@@ -154,7 +154,9 @@ def upload():
             else:
                 # use a unique id to mark each image so that images with same name will not overwrite each other
                 filename = secure_filename(file.filename)
+                uploader = model.User.query.filter_by(username=session['user']).first()
                 candidate_file = model.Image(filename=filename)
+                candidate_file.uploader = uploader
                 db.session.add(candidate_file)
                 db.session.commit()
                 name, ext = filename.rsplit(".", 1)
@@ -176,17 +178,17 @@ def preview():
     if 'user' not in session:
         flash('You are not logged in!')
         return redirect(url_for('index'))
-    images = os.listdir('app/static/users/' + session['user'] + '/original')
+    # images = os.listdir('app/static/users/' + session['user'] + '/original')
+    current_user = model.User.query.filter_by(username=session['user']).first()
+    user_photo = current_user.images
+    #  print(user_photo[0].filename)
     hists = {}
-    for img_id in images:
-        cur_id = img_id.rsplit(".", 1)[0]
-        try:
-            cur_id = int(cur_id)
-            # display the original name of the photo
-            img_name = model.Image.query.filter_by(id=cur_id).first().filename
-        except:
-            img_name = None
-        hists[img_id] = img_name
+    for image in user_photo:
+        ext = image.filename.rsplit(".", 1)[1]
+        name = str(image.id)
+        full_name = name + '.' + ext
+        current_img = full_name
+        hists[current_img] = image.filename
     return render_template('preview2.html', hists=hists, username=session['user'])
 
 
@@ -241,7 +243,9 @@ def api_upload():
         return "406, That image extension is not allowed!"
     else:
         filename = secure_filename(file.filename)
+        uploader = model.User.query.filter_by(username=session['user']).first()
         candidate_file = model.Image(filename=filename)
+        candidate_file.uploader = uploader
         db.session.add(candidate_file)
         db.session.commit()
         name, ext = filename.rsplit(".", 1)
