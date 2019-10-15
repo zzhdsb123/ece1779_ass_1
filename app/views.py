@@ -243,7 +243,7 @@ def api_upload():
         return "406, That image extension is not allowed!"
     else:
         filename = secure_filename(file.filename)
-        uploader = model.User.query.filter_by(username=session['user']).first()
+        uploader = model.User.query.filter_by(username=username).first()
         candidate_file = model.Image(filename=filename)
         candidate_file.uploader = uploader
         db.session.add(candidate_file)
