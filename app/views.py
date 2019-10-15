@@ -58,14 +58,15 @@ def register():
             flag = True
 
         if not 2 <= len(password) <= 100:
-            context['pawconfirm_valid'] = 1
+            context['password_valid'] = 2
             flag = True
 
         # users are not allowed to have same username
         dup_user = model.User.query.filter_by(username=username).first()
-        if dup_user is not None:
+        if dup_user:
             context['username_valid'] = 2
             flag = True
+
         if flag:
             return render_template('signup.html', **context)
 
