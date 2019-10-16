@@ -1,5 +1,6 @@
 from flask import render_template, flash, request, redirect, url_for, session, jsonify
 import os
+from werkzeug.exceptions import RequestEntityTooLarge
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import text_detection, model, db, app
@@ -145,7 +146,11 @@ def upload():
     username = session['user']
     # verify the extension of the image which users want to upload
     if request.method == "POST":
-        file = request.files['file']
+        try:
+            file = request.files['file']
+        except RequestEntityTooLarge:
+            # TODO files too big
+            return "file too big"
         if request.files:
             if file.filename == "":
                 flash("Image must have a filename")
@@ -230,7 +235,10 @@ def api_register():
 def api_upload():
     username = request.form.get('username')
     password = request.form.get('password')
-    file = request.files['file']
+    try:
+        file = request.files['file']
+    except RequestEntityTooLarge:
+        return "406, file too big!"
     if not isinstance(username, str) or not 2 <= len(username) <= 100:
         return "406, invalid username or password!"
     if not isinstance(username, str) or not 2 <= len(password) <= 100:
