@@ -149,8 +149,7 @@ def upload():
         try:
             file = request.files['file']
         except RequestEntityTooLarge:
-            # TODO files too big
-            return "file too big"
+            return render_template('upload_not_success.html', errorcode=3)
         if request.files:
             if file.filename == "":
                 flash("Image must have a filename")
