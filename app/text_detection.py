@@ -26,7 +26,10 @@ def process_image(filename, east="frozen_east_text_detection.pb", location="imag
 
     # load the input image and grab the image dimensions
     image = cv2.imread(filename)
-    orig = image.copy()
+    try:
+        orig = image.copy()
+    except:
+        raise ValueError
     (H, W) = image.shape[:2]
 
     # set the new width and height and then determine the ratio in change

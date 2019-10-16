@@ -153,10 +153,10 @@ def upload():
         if request.files:
             if file.filename == "":
                 flash("Image must have a filename")
-                return render_template('upload_not_success.html',errorcode=1)
+                return render_template('upload_not_success.html', errorcode=1)
             if not allowed_img(file.filename):
                 flash("That image extension is not allowed!")
-                return render_template('upload_not_success.html',errorcode=2)
+                return render_template('upload_not_success.html', errorcode=2)
 
             else:
                 # use a unique id to mark each image so that images with same name will not overwrite each other
@@ -173,7 +173,10 @@ def upload():
                 file.save(os.path.join("app/static/users/" + username + '/original/', name + '.' + ext))
                 east_location = "app/frozen_east_text_detection.pb"
                 # run the text detector and store the new image in the corresponding directory
-                text_detection.process_image(original_name, east_location, new_img_name)
+                try:
+                    text_detection.process_image(original_name, east_location, new_img_name)
+                except ValueError:
+                    return render_template('upload_not_success.html', errorcode=2)
                 flash("upload success!")
         return render_template('upload_success.html')
     return render_template('upload2.html')
