@@ -7,6 +7,8 @@ from datetime import timedelta
 
 # the following four image extensions are allowed
 app.config["allowed_img"] = ["png", "jpg", "jpeg", "fig"]
+# the maximum image size is 10m
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 app.secret_key = os.urandom(24)
 db.create_all()
 
