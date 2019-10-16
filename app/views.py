@@ -149,10 +149,10 @@ def upload():
         if request.files:
             if file.filename == "":
                 flash("Image must have a filename")
-                return redirect(request.url)
+                return render_template('upload_not_success.html',errorcode=1)
             if not allowed_img(file.filename):
                 flash("That image extension is not allowed!")
-                return redirect(request.url)
+                return render_template('upload_not_success.html',errorcode=2)
 
             else:
                 # use a unique id to mark each image so that images with same name will not overwrite each other
