@@ -168,6 +168,7 @@ def upload():
                 db.session.commit()
                 name, ext = filename.rsplit(".", 1)
                 name = str(candidate_file.id)
+                file_id = candidate_file.id
                 original_name = 'app/static/users/' + username + '/original/' + name + '.' + ext
                 new_img_name = 'app/static/users/' + username + '/processed/' + name + '.' + ext
                 file.save(os.path.join("app/static/users/" + username + '/original/', name + '.' + ext))
@@ -176,6 +177,9 @@ def upload():
                 try:
                     text_detection.process_image(original_name, east_location, new_img_name)
                 except ValueError:
+                    os.remove("app/static/users/" + username + '/original/' + name + '.' + ext)
+                    model.Image.query.filter_by(id=file_id).delete()
+                    db.session.commit()
                     return render_template('upload_not_success.html', errorcode=2)
                 flash("upload success!")
         return render_template('upload_success.html')
