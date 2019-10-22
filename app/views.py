@@ -282,3 +282,7 @@ def api_upload():
             return "406, not a valid file"
         return "201, upload success!"
 
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    return "413, File too big!"
